@@ -552,7 +552,7 @@ class Toplevel1:
         self.Button5.configure(highlightbackground="#d9d9d9")
         self.Button5.configure(highlightcolor="black")
         self.Button5.configure(pady="0")
-        self.Button5.configure(text='''Promedio por Departamento''')
+        self.Button5.configure(text='''Promedio''')
 
         self.Entry15 = tk.Entry(self.Frame3)
         self.Entry15.place(relx=0.256, rely=0.118,height=20, relwidth=0.144)
