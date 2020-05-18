@@ -86,7 +86,7 @@ def busProvincia():
     print('GUI_support.busPro')
     sys.stdout.flush()
     contador=0
-    INGPRO=ingProvincia.get()
+    INGPRO=ingProvincia.get().upper()
     for datos in lstFarmacia:
         if datos["provincia_nombre"] == INGPRO:
             contador+=1
@@ -109,25 +109,36 @@ def buscID():
 def finMutual():
     print('GUI_support.finMutual')
     sys.stdout.flush()
-    cont=0
-    cont1=0
-    cont2=0
+    lstAuxiliar=[[],[]]
+    #cont=0
+    #cont1=0
+    #cont2=0
     for datos in lstFarmacia:
-        if datos["provincia_id"] == "6" and datos["origen_financiamiento"] == "Mutual":
-            cont+=1
-        elif datos["provincia_id"] == "2" and datos["origen_financiamiento"] == "Mutual":
-            cont1+=1
-        elif datos["provincia_id"] == "42" and datos["origen_financiamiento"] == "Mutual":
-            cont2+=1
-        elif cont > cont1 and cont > cont2:
-            cantMututal.set(cont)
-            nomMutual.set("BUENOS AIRES")
-        elif cont1 > cont and cont1 > cont2:
-            cantMututal.set(cont1)
-            nomMutual.set("CABA")
-        elif cont2 > cont1 and cont2 > cont:
-            cantMututal.set(cont2)
-            nomMutual.set("FORMOSA")
+        if datos["provincia_id"] not in lstAuxiliar[0]:
+            lstAuxiliar[0].append(datos['privincia_id'])
+            lstAuxiliar[1].append(0)
+    for datos in  lstFarmacia:
+        if datos['origen_financiamiento'] == "Mutual":
+            i=lstAuxiliar[0].index(datos["privincia_id"])
+            lstAuxiliar[1][i]+=1
+
+    mI = lstAuxiliar[1].index(max(lstAuxiliar[1]))
+    nomMutual.set(lstAuxiliar[0][mI])
+    cantMututal.set(lstAuxiliar[1][mI])
+            #cont+=1
+        #elif datos["provincia_id"] == "2" and datos["origen_financiamiento"] == "Mutual":
+            #cont1+=1
+        #elif datos["provincia_id"] == "42" and datos["origen_financiamiento"] == "Mutual":
+            #cont2+=1
+        #elif cont > cont1 and cont > cont2:
+            #cantMututal.set(cont)
+           # nomMutual.set("BUENOS AIRES")
+        #elif cont1 > cont and cont1 > cont2:
+          #  cantMututal.set(cont1)
+         #   nomMutual.set("CABA")
+        #elif cont2 > cont1 and cont2 > cont:
+            #cantMututal.set(cont2)
+            #nomMutual.set("FORMOSA")
 
 def proDepto():
     print('GUI_support.proDepto')
@@ -141,14 +152,12 @@ def proDepto():
     lstFinanciamiento = []
     lista = []
     for datos in lstFarmacia:
-        if provincia == datos['provincia_nombre']:
+        if provincia == datos["provincia_nombre"] and financiamiento == datos["origen_financiamiento"]:
             prov = datos['provincia_nombre']
             lstFinanciamiento.append(provincia)
             lstTotal.append(prov)
             total = lstTotal.count(provincia)
-    for i in lstFarmacia:
-        if financiamiento == i['origen_financiamiento']:
-            finan = i['origen_financiamiento']
+            finan = datos['origen_financiamiento']
             lista.append(finan)
             contarFinanciamiento = lista.count(financiamiento)
     Promedio = round((contarFinanciamiento * 100 / total),2)
